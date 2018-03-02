@@ -1,14 +1,46 @@
 #!/bin/bash
 
+# ================================================
+# TODO :
+# external config file
+# custom amount of short break per round
+# better messages
+# custom buttons and icons
+# snooze
+# ================================================
+
 # Default values
-TITLE="Pomodoro"
-TEXT="Take a 5 fimutes break"
 # VALUE=$(cat ./value)
-VALUE=0
+TITLE="Pomodoro"
 WIDTH=800
 HEIGHT=100
+SHORT_BREAK_TIME=1 # 5min == 300s
+LONG_BREAK_TIME=5 # 15min == 900s
+WORK_INTERVAL=3 # 40min = 2400s
+BRAKES_PER_ROUND=4
 
-zenity --title=$TITLE --text="$TEXT" --width=800 --height=100 --progress --percentage=$VALUE --auto-close --no-cancel
+BREAK_NUMBER=0
+BREAK_TIME=$SHORT_BREAK_TIME
 
+while true
+do
+  sleep $WORK_INTERVAL
 
+  TEXT="Break $BREAK_NUMBER \\nBreak time = $BREAK_TIME"
 
+  zenity --title=$TITLE --text="$TEXT" --width=$WIDTH --height=$HEIGHT --timeout=$BREAK_TIME --info
+
+  (( ++BREAK_NUMBER ))
+
+  if [ "$BREAK_NUMBER" -eq "3" ]
+  then
+    BREAK_TIME=$LONG_BREAK_TIME
+  fi
+
+  if [ "$BREAK_NUMBER" -eq "$BRAKES_PER_ROUND" ]
+  then
+    BREAK_NUMBER=0
+    BREAK_TIME=$SHORT_BREAK_TIME
+  fi
+
+done
