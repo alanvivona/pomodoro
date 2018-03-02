@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Default values
+TITLE="Pomodoro"
+TEXT="Take a 5 fimutes break"
+# VALUE=$(cat ./value)
+VALUE=0
+WIDTH=800
+HEIGHT=100
+
+zenity --title=$TITLE --text="$TEXT" --width=800 --height=100 --progress --percentage=$VALUE --auto-close --no-cancel
+
+
+
